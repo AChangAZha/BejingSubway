@@ -33,7 +33,15 @@ void AdminLogin::on_login_pressed()
     }
     else
     {
-        QMessageBox::warning(this, "错误", "用户名或密码错误！", QMessageBox::Ok);
+        QMessageBox box;
+        box.setWindowTitle(tr("管理员登录"));
+        box.setWindowIcon(QIcon(":/icon/icon/logo.png"));
+        box.setIcon(QMessageBox::Warning);
+        box.setText(tr("用户名或密码错误！"));
+        if (box.exec() == QMessageBox::Accepted)
+        {
+            box.close();
+        }
         ui->userName->clear();
         ui->password->clear();
         ui->userName->setFocus();

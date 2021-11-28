@@ -7,24 +7,22 @@ template <class T>
 class Stack
 {
 public:
-    Stack():top(0){}
+    Stack() : top(0) {}
     bool NotEmpty();
     void Push(const T &x);
     T &Pop();
     T &GetTop();
     int GetSize();
-    SeqList<T> stack;
-    int top;
-
 
 protected:
+    SeqList<T> stack;
+    int top;
 };
-
 
 template <class T>
 bool Stack<T>::NotEmpty()
 {
-    if(top<=0)
+    if (top <= 0)
         return false;
     else
         return true;
@@ -40,7 +38,7 @@ void Stack<T>::Push(const T &x)
 template <class T>
 T &Stack<T>::Pop()
 {
-    if(top<=0)
+    if (top <= 0)
         throw "error";
     top--;
     return stack.Delete(top);
@@ -49,11 +47,10 @@ T &Stack<T>::Pop()
 template <class T>
 T &Stack<T>::GetTop()
 {
-    if(top<=0)
+    if (top <= 0)
         throw "error";
-    return stack[top-1];
+    return stack[top - 1];
 }
-
 
 template <class T>
 int Stack<T>::GetSize()

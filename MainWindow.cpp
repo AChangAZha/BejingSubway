@@ -29,8 +29,8 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent),
     setWindowIcon(QIcon(":/icon/icon/logo.png"));
 
     map = new CSubwayMap;
-    map->FromJson();
     map->mainWindow = this;
+    map->FromJson();
 
     view = new Graphics_view_zoom(ui->subwayMap);
     view->set_modifiers(Qt::NoModifier);
@@ -279,47 +279,57 @@ void MainWindow::SwitchLine(int line)
     Reset();
     QString firstTime = "首车时间：" + map->GetLine(line)->getFirstTime();
     QString lastTime = "末车时间：" + map->GetLine(line)->getLastTime();
-    search->ui->textBrowser->setText(firstTime + "\n" + lastTime);
-    qreal maxX = map->GetStation(line, 0)->mapitem->rect().x();
-    qreal minX = map->GetStation(line, 0)->mapitem->rect().x();
-    qreal maxY = map->GetStation(line, 0)->mapitem->rect().y();
-    qreal minY = map->GetStation(line, 0)->mapitem->rect().y();
-    generalScene->removeItem((QGraphicsEllipseItem *)fromItem);
-    stateScene->removeItem((QGraphicsEllipseItem *)fromItem_2);
-    generalScene->removeItem((QGraphicsEllipseItem *)toItem);
-    stateScene->removeItem((QGraphicsEllipseItem *)toItem_2);
-    generalScene->removeItem((QGraphicsEllipseItem *)posItem);
-    stateScene->removeItem((QGraphicsEllipseItem *)posItem_2);
-    white->QGraphicsEllipseItem::setZValue(80);
-    for (int i = 0; i < map->GetLine(line)->GetNumOfStation(); i++)
+    QString charges;
+    if (map->GetLine(line)->GetCharges() == 0)
+        charges = "收费：计程收费";
+    else if (map->GetLine(line)->GetCharges() == -1)
+        charges = "收费：区间收费";
+    else if (map->GetLine(line)->GetCharges() > 0)
+        charges = "收费：" + QString::number(map->GetLine(line)->GetCharges());
+    search->ui->textBrowser->setText(firstTime + "\n" + lastTime + "\n" + charges);
+    if (map->GetLine(line)->GetNumOfStation() != 0)
     {
-        CStation *sta = map->GetStation(line, i);
-        MapItem *staItem = sta->mapitem;
-        staItem->QGraphicsEllipseItem::setZValue(100);
-        qreal x = staItem->rect().x();
-        qreal y = staItem->rect().y();
-        if (x > maxX)
-            maxX = x;
-        if (x < minX)
-            minX = x;
-        if (y > maxY)
-            maxY = y;
-        if (y < minY)
-            minY = y;
-        CIntersite *link = sta->GetLink();
-        while (link != NULL)
+        qreal maxX = map->GetStation(line, 0)->mapitem->rect().x();
+        qreal minX = map->GetStation(line, 0)->mapitem->rect().x();
+        qreal maxY = map->GetStation(line, 0)->mapitem->rect().y();
+        qreal minY = map->GetStation(line, 0)->mapitem->rect().y();
+        generalScene->removeItem((QGraphicsEllipseItem *)fromItem);
+        stateScene->removeItem((QGraphicsEllipseItem *)fromItem_2);
+        generalScene->removeItem((QGraphicsEllipseItem *)toItem);
+        stateScene->removeItem((QGraphicsEllipseItem *)toItem_2);
+        generalScene->removeItem((QGraphicsEllipseItem *)posItem);
+        stateScene->removeItem((QGraphicsEllipseItem *)posItem_2);
+        white->QGraphicsEllipseItem::setZValue(80);
+        for (int i = 0; i < map->GetLine(line)->GetNumOfStation(); i++)
         {
-            if (link->generalLink != NULL)
-                link->generalLink->QGraphicsLineItem::setZValue(90);
-            if (link->stateLink != NULL)
-                link->stateLink->QGraphicsLineItem::setZValue(90);
-            link = link->GetLink();
+            CStation *sta = map->GetStation(line, i);
+            MapItem *staItem = sta->mapitem;
+            staItem->QGraphicsEllipseItem::setZValue(100);
+            qreal x = staItem->rect().x();
+            qreal y = staItem->rect().y();
+            if (x > maxX)
+                maxX = x;
+            if (x < minX)
+                minX = x;
+            if (y > maxY)
+                maxY = y;
+            if (y < minY)
+                minY = y;
+            CIntersite *link = sta->GetLink();
+            while (link != NULL)
+            {
+                if (link->generalLink != NULL)
+                    link->generalLink->QGraphicsLineItem::setZValue(90);
+                if (link->stateLink != NULL)
+                    link->stateLink->QGraphicsLineItem::setZValue(90);
+                link = link->GetLink();
+            }
         }
+        ui->subwayMap->scale(0.7 / scale, 0.7 / scale);
+        scale = 0.7;
+        ui->subwayMap->centerOn((maxX + minX) / 2.0, (maxY + minY) / 2.0);
+        isWhite = true;
     }
-    ui->subwayMap->scale(0.7 / scale, 0.7 / scale);
-    scale = 0.7;
-    ui->subwayMap->centerOn((maxX + minX) / 2.0, (maxY + minY) / 2.0);
-    isWhite = true;
 }
 
 void MainWindow::SelectFrom(CStation *from)

@@ -15,7 +15,6 @@
 #include <QColor>
 #include <QMessageBox>
 
-#define MAX 23
 #define INF 0x3f3f3f3f
 
 //添加线路
@@ -33,8 +32,10 @@ bool CSubwayMap::AddLine(const QString &lineName, const QColor &color, const int
 }
 
 //添加站点
-CStation *CSubwayMap::AddStation(const int &lineNum, const QString &stationName,
-                                 const bool &en, const bool &ex, const double &lng,
+CStation *CSubwayMap::AddStation(const int &lineNum,
+                                 const QString &stationName,
+                                 const bool &en, const bool &ex,
+                                 const double &lng,
                                  const double &lat, CStation *sta)
 {
     bool find = false;
@@ -212,10 +213,12 @@ void CSubwayMap::FromJson()
     if (QJsonParseError::NoError == error.error)
     {
         const QJsonObject &mapObject = document.object();
+        const QString &announcement = mapObject.value("announcement").toString();
+        mainWindow->announcement = announcement;
         const QJsonArray &lineArray = mapObject.value("line").toArray();
         SeqList<SeqList<QJsonArray>> intersite;
         SeqList<QJsonArray> station;
-        for (int i = 0; i < MAX; i++)
+        for (int i = 0; i < lineArray.size(); i++)
         {
             const QJsonObject &lineObject = lineArray[i].toObject();
             const QString &lineName = lineObject.value("lineName").toString();
@@ -252,18 +255,15 @@ void CSubwayMap::FromJson()
                 {
                     const QJsonObject &link = intersite[i][j][k].toObject();
                     const int &lineNum = link.value("line").toInt();
-                    if (lineNum < MAX)
+                    const int &distance = link.value("distance").toInt();
+                    const int &toIndex = link.value("index").toInt();
+                    const bool &passable = (bool)link.value("passable").toInt();
+                    const int &charges = link.value("charges").toInt();
+                    CStation *toStation = line[lineNum]->station[toIndex];
+                    fromStation->AddLink(toStation, distance, passable, NULL, charges);
+                    if (passable && distance == 0)
                     {
-                        const int &distance = link.value("distance").toInt();
-                        const int &toIndex = link.value("index").toInt();
-                        const bool &passable = (bool)link.value("passable").toInt();
-                        const int &charges = link.value("charges").toInt();
-                        CStation *toStation = line[lineNum]->station[toIndex];
-                        fromStation->AddLink(toStation, distance, passable, NULL, charges);
-                        if (passable && distance == 0)
-                        {
-                            line[i]->AddLinkLine(line[lineNum]);
-                        }
+                        line[i]->AddLinkLine(line[lineNum]);
                     }
                 }
             }
@@ -322,6 +322,7 @@ void CSubwayMap::ToJson()
         lineArray.append(lineObject);
     }
     mapObject.insert("line", lineArray);
+    mapObject.insert("announcement", mainWindow->announcement);
     QString subway = QJsonDocument(mapObject).toJson();
     QFile file;
     file.setFileName("./subway.json");
@@ -406,9 +407,12 @@ void CSubwayMap::FindAllPaths(CStation *const from, CStation *const to) const
 }
 
 //DFS搜索所有线路
-void CSubwayMap::DepthFirstSearch(CStation *const from, CStation *const to, Stack<Node> &stack,
-                                  SeqList<Node> &path, SeqList<SeqList<int>> &staStatus,
-                                  SeqList<SeqList<int>> &stackStatus, SeqList<SeqList<Node>> &paths) const
+void CSubwayMap::DepthFirstSearch(CStation *const from, CStation *const to,
+                                  Stack<Node> &stack,
+                                  SeqList<Node> &path,
+                                  SeqList<SeqList<int>> &staStatus,
+                                  SeqList<SeqList<int>> &stackStatus,
+                                  SeqList<SeqList<Node>> &paths) const
 {
     CIntersite *link = from->link;
     while (link != NULL)

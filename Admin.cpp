@@ -20,7 +20,7 @@
 
 //构造函数
 Admin::Admin(QWidget *parent) : QDialog(parent),
-                                ui(new Ui::Admin)
+    ui(new Ui::Admin)
 {
     ui->setupUi(this);
     setWindowTitle(QString::fromUtf8("地铁线路图维护"));
@@ -48,9 +48,9 @@ Admin::Admin(QWidget *parent) : QDialog(parent),
 
     ui->stationTable->setColumnCount(4);
     ui->stationTable->setHorizontalHeaderLabels(QStringList() << "所属线路"
-                                                              << "站名"
-                                                              << "换乘"
-                                                              << "运营状态");
+                                                << "站名"
+                                                << "换乘"
+                                                << "运营状态");
     ui->stationTable->setSelectionBehavior(QAbstractItemView::SelectRows); //整行选中的方式
     ui->stationTable->setEditTriggers(QAbstractItemView::NoEditTriggers);  //禁止修改
     ui->stationTable->verticalHeader()->setHidden(true);
@@ -314,10 +314,24 @@ void Admin::on_manageLine_pressed()
 
 void Admin::ModifyLine()
 {
+    QMessageBox box;
+    box.setWindowTitle(tr("修改线路信息"));
+    box.setWindowIcon(QIcon(":/icon/icon/logo.png"));
     CLine *line = map->line[ui->lineComboBox->currentIndex() - 1];
     QString lineName = addLine->ui->lineName->text();
     if (line->name != lineName)
     {
+        if(map->SearchLine(lineName))
+        {
+            box.setIcon(QMessageBox::Critical);
+            box.setText(tr("修改失败，新线路名与其他线路重复！"));
+            if (box.exec() == QMessageBox::Accepted)
+            {
+                box.close();
+            }
+            addLine->ui->addLine->setFocus();
+            return;
+        }
         line->name = lineName;
         int count = 0;
         for (int i = 0; i < line->index; i++)
@@ -330,7 +344,7 @@ void Admin::ModifyLine()
             count++;
         }
         ui->lineComboBox->setItemText(line->index + 1, lineName);
-        mainWindow->search->ui->allLine->item(line->index)->setText(lineName);
+        mainWindow->search->ui->allLine->item(line->index+1)->setText(lineName);
     }
     QColor lineColor = addLine->lineColor;
     if (line->lineColor != lineColor)
@@ -375,9 +389,6 @@ void Admin::ModifyLine()
             }
         }
     }
-    QMessageBox box;
-    box.setWindowTitle(tr("修改线路信息"));
-    box.setWindowIcon(QIcon(":/icon/icon/logo.png"));
     box.setIcon(QMessageBox::Information);
     box.setText(tr("修改成功！"));
     if (box.exec() == QMessageBox::Accepted)
@@ -494,6 +505,8 @@ void Admin::ModifyStation()
     {
         box.close();
     }
+    ui->lineComboBox->setCurrentIndex(0);
+    loadStationTable();
     addStation->close();
 }
 
