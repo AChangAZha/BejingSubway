@@ -139,6 +139,7 @@ void Button::on_narrow_pressed()
     }
 }
 
+//关于作者
 void Button::on_about_pressed()
 {
     QMessageBox box;

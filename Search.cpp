@@ -1,3 +1,9 @@
+/*
+ * @Author: AChangAZha
+ * @Date: 2021-11-24 16:37:20
+ * @LastEditTime: 2021-12-07 20:03:16
+ * @LastEditors: AChangAZha
+ */
 #include "Search.h"
 #include "ui_Search.h"
 #include "MainWindow.h"
@@ -7,6 +13,8 @@
 #include "CStation.h"
 #include "MapItem.h"
 #include "QtMath"
+
+//构造函数
 Search::Search(MainWindow *mainWindow, QWidget *parent) : QWidget(parent),
                                                           ui(new Ui::Search)
 {
@@ -32,21 +40,25 @@ Search::Search(MainWindow *mainWindow, QWidget *parent) : QWidget(parent),
                             "QPushButton:pressed{background-color:rgb(204, 228, 247);border-style: inset;}");
 }
 
+//析构函数
 Search::~Search()
 {
     delete ui;
 }
 
+//切换线路
 void Search::on_allLine_pressed(const QModelIndex &index)
 {
     mainWindow->SwitchLine(index.row() - 1);
 }
 
+//重写paintEvent为按钮四周加上阴影
 void Search::on_next_pressed()
 {
     mainWindow->ShowNextPaths();
 }
 
+//显示下一条线路按钮
 void Search::paintEvent(QPaintEvent *event)
 {
     QPainterPath path;
@@ -69,6 +81,7 @@ void Search::paintEvent(QPaintEvent *event)
     }
 }
 
+//搜索按钮
 void Search::on_search_pressed()
 {
     mainWindow->SearchStation(mainWindow->map->SearchStation(ui->stationName->text()));

@@ -1,3 +1,9 @@
+/*
+ * @Author: AChangAZha
+ * @Date: 2021-11-24 15:16:29
+ * @LastEditTime: 2021-12-07 19:41:46
+ * @LastEditors: AChangAZha
+ */
 #include "SeqList.h"
 #include "CLine.h"
 #include "CStation.h"
@@ -15,12 +21,14 @@ CStation *CLine::AddStation(const QString &stationName,
     return newStation;
 }
 
-QString CLine::getLastTime() const
+//获取首车时间
+QString CLine::GetLastTime() const
 {
     return lastTime;
 }
 
-QString CLine::getFirstTime() const
+//获取末车时间
+QString CLine::GetFirstTime() const
 {
     return firstTime;
 }

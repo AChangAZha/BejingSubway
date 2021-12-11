@@ -277,8 +277,8 @@ void MainWindow::SwitchLine(int line)
         return;
     }
     Reset();
-    QString firstTime = "首车时间：" + map->GetLine(line)->getFirstTime();
-    QString lastTime = "末车时间：" + map->GetLine(line)->getLastTime();
+    QString firstTime = "首车时间：" + map->GetLine(line)->GetFirstTime();
+    QString lastTime = "末车时间：" + map->GetLine(line)->GetLastTime();
     QString charges;
     if (map->GetLine(line)->GetCharges() == 0)
         charges = "收费：计程收费";
@@ -332,6 +332,7 @@ void MainWindow::SwitchLine(int line)
     }
 }
 
+//选择起点
 void MainWindow::SelectFrom(CStation *from)
 {
     if (to == from)
@@ -391,6 +392,7 @@ void MainWindow::SelectFrom(CStation *from)
     SearchPath();
 }
 
+//选择终点
 void MainWindow::SelectTo(CStation *to)
 {
     if (to == from)
@@ -451,6 +453,7 @@ void MainWindow::SelectTo(CStation *to)
     SearchPath();
 }
 
+//搜索路径
 void MainWindow::SearchPath()
 {
     if (from == NULL || to == NULL)
@@ -506,6 +509,7 @@ void MainWindow::SearchPath()
     path.Clear();
 }
 
+//绘制线路
 void MainWindow::PaintPath(CStation *sta, CIntersite *aLink)
 {
     if (path.GetSize() == 0)
@@ -575,6 +579,7 @@ void MainWindow::PaintPath(CStation *sta, CIntersite *aLink)
     path.Clear();
 }
 
+//搜索最短路径
 void MainWindow::FindShortestPath(CStation *toSta, SeqList<SeqList<Node>> &path)
 {
     if (path.GetSize() == 0)
@@ -586,6 +591,7 @@ void MainWindow::FindShortestPath(CStation *toSta, SeqList<SeqList<Node>> &path)
     this->path.Add(path[toSta->GetLine()][toSta->GetIndex()]);
 }
 
+//显示站点信息
 void MainWindow::ShowStaButton(CStation *sta)
 {
     staButton->SetSta(sta);
@@ -593,6 +599,7 @@ void MainWindow::ShowStaButton(CStation *sta)
     staButton->move(QCursor::pos());
 }
 
+//显示下一条线路
 void MainWindow::ShowNextPaths()
 {
     CurrResult = (CurrResult + 1) % allPaths.GetSize();
@@ -600,6 +607,7 @@ void MainWindow::ShowNextPaths()
     PaintPath(allFrom, NULL);
 }
 
+//计算票价
 void MainWindow::CountCharges(CIntersite *aLink)
 {
     if (path.GetSize() == 0)
@@ -641,6 +649,7 @@ void MainWindow::CountCharges(CIntersite *aLink)
     search->ui->charges->setText(text);
 }
 
+//计算票价（计程收费）
 int MainWindow::CountCharges(int sum)
 {
     if (sum == 0)
@@ -664,6 +673,7 @@ int MainWindow::CountCharges(int sum)
     }
 }
 
+//查询站点
 void MainWindow::SearchStation(CStation *station)
 {
     if (station == NULL)
@@ -704,6 +714,7 @@ void MainWindow::SearchStation(CStation *station)
     ui->subwayMap->centerOn(x, y);
 }
 
+//显示管理员窗口
 void MainWindow::AdminShow()
 {
     admin->ui->tabWidget->setCurrentIndex(0);

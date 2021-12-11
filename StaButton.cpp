@@ -7,6 +7,8 @@
 #include "MainWindow.h"
 #include <QPainter>
 #include <QtMath>
+
+//构造函数
 StaButton::StaButton(MainWindow *mainWindow, QWidget *parent) : QDialog(parent),
                                                                 ui(new Ui::StaButton)
 {
@@ -32,23 +34,27 @@ StaButton::StaButton(MainWindow *mainWindow, QWidget *parent) : QDialog(parent),
     ui->lineName->setAlignment(Qt::AlignCenter);
 }
 
+//析构函数
 StaButton::~StaButton()
 {
     delete ui;
 }
 
+//选择起点按钮
 void StaButton::on_from_pressed()
 {
     mainWindow->SelectFrom(sta);
     this->close();
 }
 
+//选择终点按钮
 void StaButton::on_to_pressed()
 {
     mainWindow->SelectTo(sta);
     this->hide();
 }
 
+//设置站点
 void StaButton::SetSta(CStation *value)
 {
     sta = value;
@@ -73,6 +79,7 @@ void StaButton::SetSta(CStation *value)
     ui->lineName->setText(line);
 }
 
+//重写paintEvent为按钮四周加上阴影
 void StaButton::paintEvent(QPaintEvent *event)
 {
     QPainterPath path;

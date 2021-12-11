@@ -1,3 +1,9 @@
+/*
+ * @Author: AChangAZha
+ * @Date: 2021-11-26 00:02:10
+ * @LastEditTime: 2021-12-07 19:40:42
+ * @LastEditors: AChangAZha
+ */
 #ifndef BUTTON_H
 #define BUTTON_H
 
@@ -31,7 +37,7 @@ private slots:
     void on_magnify_pressed();
     //缩小线路图
     void on_narrow_pressed();
-
+    //关于作者
     void on_about_pressed();
 
 private:

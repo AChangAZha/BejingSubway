@@ -1,21 +1,21 @@
 #include "MapItem.h"
+#include "CSubwayMap.h"
+#include "CIntersite.h"
+#include "CLine.h"
+#include "CStation.h"
+#include "StaButton.h"
+#include "MainWindow.h"
+#include "ui_MainWindow.h"
+#include "Search.h"
+#include "ui_Search.h"
+#include <QtMath>
 #include <QPen>
 #include <QStyleOptionGraphicsItem>
 #include <QPainter>
 #include <QObject>
-#include "CStation.h"
 #include <QGraphicsSceneMouseEvent>
-#include <QDebug>
-#include "StaButton.h"
-#include "MainWindow.h"
-#include "CSubwayMap.h"
-#include "CIntersite.h"
-#include "CLine.h"
-#include "Search.h"
-#include "ui_Search.h"
-#include "ui_MainWindow.h"
-#include <QtMath>
 
+//构造函数
 MapItem::MapItem(MainWindow *mainWindow, ItemType type, CStation *sta, CIntersite *link, QGraphicsItem *parent)
     : QGraphicsEllipseItem(parent)
 {
@@ -58,6 +58,7 @@ MapItem::MapItem(MainWindow *mainWindow, ItemType type, CStation *sta, CIntersit
     }
 }
 
+//绘制
 void MapItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(option);
@@ -229,6 +230,7 @@ void MapItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     }
 }
 
+//点击站点
 void MapItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     if (mainWindow->isWhite == false && (type == circle || type == picture))
@@ -248,6 +250,7 @@ void MapItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
     }
 }
 
+//双击空白
 void MapItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     if (type == rectangle)

@@ -20,7 +20,7 @@
 
 //构造函数
 Admin::Admin(QWidget *parent) : QDialog(parent),
-    ui(new Ui::Admin)
+                                ui(new Ui::Admin)
 {
     ui->setupUi(this);
     setWindowTitle(QString::fromUtf8("地铁线路图维护"));
@@ -48,9 +48,9 @@ Admin::Admin(QWidget *parent) : QDialog(parent),
 
     ui->stationTable->setColumnCount(4);
     ui->stationTable->setHorizontalHeaderLabels(QStringList() << "所属线路"
-                                                << "站名"
-                                                << "换乘"
-                                                << "运营状态");
+                                                              << "站名"
+                                                              << "换乘"
+                                                              << "运营状态");
     ui->stationTable->setSelectionBehavior(QAbstractItemView::SelectRows); //整行选中的方式
     ui->stationTable->setEditTriggers(QAbstractItemView::NoEditTriggers);  //禁止修改
     ui->stationTable->verticalHeader()->setHidden(true);
@@ -88,6 +88,7 @@ void Admin::loadStationTable()
     }
 }
 
+//添加站点表格元素
 void Admin::AddStationTableItem(const int &row, const int &line, const int &station)
 {
     CStation *sta = map->GetStation(line, station);
@@ -286,6 +287,7 @@ void Admin::SetMainWindow(MainWindow *value)
     mainWindow = value;
 }
 
+//管理线路按钮
 void Admin::on_manageLine_pressed()
 {
     CLine *line = map->line[ui->lineComboBox->currentIndex() - 1];
@@ -312,6 +314,7 @@ void Admin::on_manageLine_pressed()
     addLine->show();
 }
 
+//管理线路按钮
 void Admin::ModifyLine()
 {
     QMessageBox box;
@@ -321,7 +324,7 @@ void Admin::ModifyLine()
     QString lineName = addLine->ui->lineName->text();
     if (line->name != lineName)
     {
-        if(map->SearchLine(lineName))
+        if (map->SearchLine(lineName))
         {
             box.setIcon(QMessageBox::Critical);
             box.setText(tr("修改失败，新线路名与其他线路重复！"));
@@ -344,7 +347,7 @@ void Admin::ModifyLine()
             count++;
         }
         ui->lineComboBox->setItemText(line->index + 1, lineName);
-        mainWindow->search->ui->allLine->item(line->index+1)->setText(lineName);
+        mainWindow->search->ui->allLine->item(line->index + 1)->setText(lineName);
     }
     QColor lineColor = addLine->lineColor;
     if (line->lineColor != lineColor)
@@ -398,6 +401,7 @@ void Admin::ModifyLine()
     addLine->close();
 }
 
+//管理站点
 void Admin::on_stationTable_cellDoubleClicked(int row, int column)
 {
     CStation *sta;
@@ -434,6 +438,7 @@ void Admin::on_stationTable_cellDoubleClicked(int row, int column)
     addStation->show();
 }
 
+//修改站点信息
 void Admin::ModifyStation()
 {
     QMessageBox box;
@@ -510,6 +515,7 @@ void Admin::ModifyStation()
     addStation->close();
 }
 
+//添加站点连接
 void Admin::AddAIntersite()
 {
     QMessageBox box;
@@ -559,6 +565,7 @@ void Admin::AddAIntersite()
     }
 }
 
+//修改站点连接信息
 void Admin::ModifyIntersite()
 {
     SeqList<CIntersite *> links;
@@ -614,6 +621,7 @@ void Admin::ModifyIntersite()
     addStation->manageIntersite->close();
 }
 
+//删除站点连接
 void Admin::DeleteIntersite(CStation *sta, CIntersite *link)
 {
     if (sta->link == link)
@@ -641,6 +649,7 @@ void Admin::DeleteIntersite(CStation *sta, CIntersite *link)
     link = NULL;
 }
 
+//删除站点
 void Admin::DeleteStation(CStation *station)
 {
     SeqList<CStation *> stations;
@@ -700,6 +709,7 @@ void Admin::DeleteStation(CStation *station)
     loadStationTable();
 }
 
+//删除站点
 void Admin::DeleteAStation(CStation *station)
 {
     SeqList<CStation *> stations;
@@ -797,6 +807,7 @@ void Admin::DeleteAStation(CStation *station)
     loadStationTable();
 }
 
+//删除线路
 void Admin::DeleteLine()
 {
     CLine *line = map->line[ui->lineComboBox->currentIndex() - 1];
@@ -824,6 +835,7 @@ void Admin::DeleteLine()
     line = NULL;
 }
 
+//发布公告按钮
 void Admin::on_announcement_pressed()
 {
     mainWindow->announcement = ui->textEdit->document()->toPlainText();

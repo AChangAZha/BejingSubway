@@ -21,7 +21,9 @@ public:
     int GetSize() const;
     //获取元素
     T &operator[](const int &index) const;
+    //删除元素
     T &Delete(const int &index);
+    //清空顺序表
     void Clear();
     //析构函数
     ~SeqList();
@@ -105,6 +107,7 @@ T &SeqList<T>::operator[](const int &index) const
         throw "error";
 }
 
+//删除元素
 template <class T>
 T &SeqList<T>::Delete(const int &index)
 {
@@ -119,6 +122,7 @@ T &SeqList<T>::Delete(const int &index)
     return x;
 }
 
+//清空顺序表
 template <class T>
 void SeqList<T>::Clear()
 {

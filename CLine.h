@@ -1,3 +1,9 @@
+/*
+ * @Author: AChangAZha
+ * @Date: 2021-11-25 23:59:41
+ * @LastEditTime: 2021-12-07 19:41:47
+ * @LastEditors: AChangAZha
+ */
 #ifndef CLINE_H
 #define CLINE_H
 
@@ -11,9 +17,9 @@ class CLine //线路类
 {
 public:
     //构造函数
-    CLine(const QString& lineName, const QColor& color, const int& charges,
-          const QString& firstTime, const QString& lastTime) : name(lineName), numOfStation(0),
-        lineColor(color), index(-1), charges(charges), firstTime(firstTime), lastTime(lastTime) {}
+    CLine(const QString &lineName, const QColor &color, const int &charges,
+          const QString &firstTime, const QString &lastTime) : name(lineName), numOfStation(0),
+                                                               lineColor(color), index(-1), charges(charges), firstTime(firstTime), lastTime(lastTime) {}
     //获取线路颜色
     QColor GetLineColor() const;
     //获取线路编号
@@ -22,25 +28,25 @@ public:
     QString GetName() const;
     //获取收费标准
     int GetCharges() const;
-
-    QString getFirstTime() const;
-
-    QString getLastTime() const;
+    //获取首车时间
+    QString GetFirstTime() const;
+    //获取末车时间
+    QString GetLastTime() const;
 
 private:
     //添加连接线路
-    void AddLinkLine(CLine* line);
+    void AddLinkLine(CLine *line);
     //添加站点
-    CStation* AddStation(const QString& stationName,
-                         const bool& en, const bool& ex, const double& lng,
-                         const double& lat, const bool& trans);
+    CStation *AddStation(const QString &stationName,
+                         const bool &en, const bool &ex, const double &lng,
+                         const double &lat, const bool &trans);
 
     QString name;                //线路名称
-    SeqList<CStation*> station;  //所有站点
+    SeqList<CStation *> station; //所有站点
     int numOfStation;            //线路站点总数
     QColor lineColor;            //线路颜色
     int index;                   //线路编号
-    SeqList<CLine*> linkLine;    //连接线路
+    SeqList<CLine *> linkLine;   //连接线路
     int charges;                 //收费标准
     QString firstTime;           //首车时间
     QString lastTime;            //末车时间

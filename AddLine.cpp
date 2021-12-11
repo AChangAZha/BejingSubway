@@ -38,7 +38,7 @@ AddLine::~AddLine()
     delete ui;
 }
 
-//添加站点按钮
+//添加线路按钮
 void AddLine::on_addLine_pressed()
 {
     if (ui->addLine->text() == "添加线路")
@@ -56,11 +56,13 @@ void AddLine::on_setColor_pressed()
     lineColor = colorDialog.currentColor();
 }
 
+//单独收费按钮
 void AddLine::on_charges3_toggled(bool checked)
 {
     ShowCharges();
 }
 
+//显示单独收费
 void AddLine::ShowCharges()
 {
     if (ui->charges3->isChecked())
@@ -71,6 +73,7 @@ void AddLine::ShowCharges()
         ui->charges->setReadOnly(true);
 }
 
+//删除线路按钮
 void AddLine::on_deleteLine_pressed()
 {
     QMessageBox box;

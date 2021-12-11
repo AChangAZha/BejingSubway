@@ -5,23 +5,29 @@
 #include <functional>
 
 template <class T, class Com = std::less<T>>
-class PriorityQueue
+class PriorityQueue //优先级队列模板类
 {
-
 public:
+    //构造函数
     PriorityQueue() : size(0) {}
+    //入队
     void Push(const T &key);
+    //出队
     void Pop();
+    //获取队头元素
     const T &GetTop();
+    //清空队列
     void Clear();
+    //判断队列是否已空
     bool Empty() { return size == 0 ? true : false; }
 
 private:
-    int size;
-    SeqList<T> queue;
-    Com com;
+    int size;         //当前队列元素数量
+    SeqList<T> queue; //队列
+    Com com;          //比较
 };
 
+//入队
 template <class T, class Com>
 void PriorityQueue<T, Com>::Push(const T &key)
 {
@@ -46,6 +52,7 @@ void PriorityQueue<T, Com>::Push(const T &key)
     }
 }
 
+//出队
 template <class T, class Com>
 void PriorityQueue<T, Com>::Pop()
 {
@@ -78,7 +85,7 @@ void PriorityQueue<T, Com>::Pop()
     }
 }
 
-//返回堆顶元素
+//获取队头元素
 template <class T, class Com>
 const T &PriorityQueue<T, Com>::GetTop()
 {
@@ -87,7 +94,7 @@ const T &PriorityQueue<T, Com>::GetTop()
     return queue[0];
 }
 
-//清空堆
+//清空队列
 template <class T, class Com>
 void PriorityQueue<T, Com>::Clear()
 {

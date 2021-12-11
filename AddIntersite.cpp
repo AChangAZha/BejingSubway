@@ -9,6 +9,7 @@
 #include "CIntersite.h"
 #include <QMessageBox>
 
+//构造函数
 AddIntersite::AddIntersite(QWidget *parent) : QDialog(parent),
                                               ui(new Ui::AddIntersite)
 {
@@ -27,11 +28,13 @@ AddIntersite::AddIntersite(QWidget *parent) : QDialog(parent),
     ui->addIntersite->setDefault(true);
 }
 
+//析构函数
 AddIntersite::~AddIntersite()
 {
     delete ui;
 }
 
+//加载线路
 void AddIntersite::loadLine()
 {
     CSubwayMap *map = manageIntersite->addStation->admin->map;
@@ -41,6 +44,7 @@ void AddIntersite::loadLine()
     }
 }
 
+//加载站点
 void AddIntersite::on_line_currentIndexChanged(int index)
 {
     CSubwayMap *map = manageIntersite->addStation->admin->map;
@@ -61,6 +65,7 @@ void AddIntersite::on_line_currentIndexChanged(int index)
         }
 }
 
+//添加按钮
 void AddIntersite::on_addIntersite_pressed()
 {
     if (ui->addIntersite->text() == "添加连接")
@@ -73,6 +78,7 @@ void AddIntersite::on_addIntersite_pressed()
     }
 }
 
+//删除按钮
 void AddIntersite::on_deleteIntersite_pressed()
 {
     QMessageBox box;

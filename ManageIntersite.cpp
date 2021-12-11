@@ -9,6 +9,7 @@
 #include "CIntersite.h"
 #include "CSubwayMap.h"
 
+//构造函数
 ManageIntersite::ManageIntersite(QWidget *parent) : QDialog(parent),
                                                     ui(new Ui::ManageIntersite)
 {
@@ -35,11 +36,13 @@ ManageIntersite::ManageIntersite(QWidget *parent) : QDialog(parent),
     addIntersite->manageIntersite = this;
 }
 
+//析构函数
 ManageIntersite::~ManageIntersite()
 {
     delete ui;
 }
 
+//添加站点连接按钮
 void ManageIntersite::on_addIntersite_pressed()
 {
     addIntersite->setWindowTitle(addStation->station->name + "  " + QString::fromUtf8("连接管理"));
@@ -77,6 +80,7 @@ void ManageIntersite::on_addIntersite_pressed()
     addIntersite->show();
 }
 
+//管理站点连接
 void ManageIntersite::on_intersiteTable_cellDoubleClicked(int row, int column)
 {
     CStation *sta = addStation->station;

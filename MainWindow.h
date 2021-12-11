@@ -51,15 +51,25 @@ public:
     void SwitchLine(int line);
     //搜索路径
     void SearchPath();
+    //选择起点
     void SelectFrom(CStation *from);
+    //选择终点
     void SelectTo(CStation *to);
+    //搜索最短路径
     void FindShortestPath(CStation *to, SeqList<SeqList<Node>> &path);
+    //绘制线路
     void PaintPath(CStation *toSta, CIntersite *toLink);
+    //显示站点信息
     void ShowStaButton(CStation *sta);
+    //显示下一条线路
     void ShowNextPaths();
+    //计算票价
     int CountCharges(int sum);
+    //计算票价（计程收费）
     void CountCharges(CIntersite *aLink);
+    //查询站点
     void SearchStation(CStation *station);
+    //显示管理员窗口
     void AdminShow();
 
     double scale = 1.0; //线路图放大倍数

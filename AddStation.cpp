@@ -64,6 +64,7 @@ void AddStation::on_addSta_pressed()
         admin->ModifyStation();
 }
 
+//管理站点连接按钮
 void AddStation::on_manageIntersite_pressed()
 {
     manageIntersite->setWindowTitle(station->name + "  " + QString::fromUtf8("连接管理"));
@@ -88,6 +89,7 @@ void AddStation::on_manageIntersite_pressed()
     manageIntersite->show();
 }
 
+//删除站点按钮
 void AddStation::on_deleteStation_pressed()
 {
     QMessageBox box;

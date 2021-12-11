@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "*.h": "c",
+        "*.txt": "bat",
+        "chrono": "c",
+        "xiosbase": "c",
+        "xtree": "c",
+        "qgraphicsscenemouseevent": "cpp"
+    }
+}
